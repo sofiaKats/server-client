@@ -11,4 +11,7 @@ int server_valid_args(int argc, char **argv, int *port, int *thread_pool_size, i
 // assigns command line arguments to corresponding variable or returns 0 if arguments are invalid
 int client_valid_args(int argc, char** argv, char* server_ip, int *server_port, char* directory);
 
+// prints out error message
+void perror_exit(char *message);
+
 #endif //VALIDATION_H

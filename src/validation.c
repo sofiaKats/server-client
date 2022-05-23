@@ -53,3 +53,8 @@ int client_valid_args(int argc, char** argv, char* server_ip, int *server_port, 
 
     return 1; // all arguments are ok
 }
+
+void perror_exit(char *message) {
+    perror(message);
+    exit(EXIT_FAILURE);
+}
