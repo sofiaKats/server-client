@@ -19,8 +19,8 @@ void recursive_list_dirs(char dirname[])
 			memset(buf, 0, sizeof(buf));
 			sprintf(buf, "%s", direntp->d_name);
 			printf("%s\n", direntp->d_name) ;
-			if (write(newsock, buf, strlen(buf)) < 0)
-    	    	perror_exit("write @ rls");
+			// if (write(newsock, buf, strlen(buf)) < 0)
+    	    // 	perror_exit("write @ rls");
 			if(direntp->d_type == DT_DIR) { // item is a directory
 				char sub_dir[1024];
 				sprintf(sub_dir, "%s/%s", dirname, direntp->d_name);

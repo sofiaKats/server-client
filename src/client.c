@@ -70,3 +70,10 @@ void perror_exit(char *message) {
     perror(message);
     exit(EXIT_FAILURE);
 }
+
+
+// ./remoteClient -i <server_ip> -p <server_port> -d <directory>
+// ΄Οπου:
+// 1. server ip: Η διεύθυνση IP που χρησιμοποιεί ο server.
+// 2. server port: Η θύρα στην οποία ακούει ο server για εξωτερικές συνδέσεις.
+// 3. directory: Ο κατάλογος προς αντιγραφή (ένα σχετικό μονοπάτι).
