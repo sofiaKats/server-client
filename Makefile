@@ -13,20 +13,22 @@ EXE_DATASERVER = ./dataServer
 EXE_REMOTECLIENT = ./remoteClient
 
 # .o files needed
+COMMON_OBJS += $(SRC)/validation.o
 OBJS_SERVER =  $(SRC)/server.o
 OBJS_CLIENT =  $(SRC)/client.o
 
 # Build executables
 all: $(EXE_DATASERVER) $(EXE_REMOTECLIENT)
 	mkdir -p $(BLD)
+	mv -f $(COMMON_OBJS) $(BLD)
 	mv -f $(OBJS_SERVER) $(BLD)
 	mv -f $(OBJS_CLIENT) $(BLD)
 
-$(EXE_DATASERVER): $(OBJS_SERVER)
-	$(CC) $(CFLAGS) $(OBJS_SERVER) -o $(EXE_DATASERVER)
+$(EXE_DATASERVER): $(OBJS_SERVER) $(COMMON_OBJS)
+	$(CC) $(CFLAGS) $(OBJS_SERVER) $(COMMON_OBJS) -o $(EXE_DATASERVER)
 
-$(EXE_REMOTECLIENT): $(OBJS_CLIENT)
-	$(CC) $(CFLAGS) $(OBJS_CLIENT) -o $(EXE_REMOTECLIENT)
+$(EXE_REMOTECLIENT): $(OBJS_CLIENT) $(COMMON_OBJS)
+	$(CC) $(CFLAGS) $(OBJS_CLIENT) $(COMMON_OBJS) -o $(EXE_REMOTECLIENT)
 
 # Delete executable & object files
 clean:
