@@ -9,6 +9,9 @@
 
 #include "validation.h"
 
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic5-Sockets.pdf
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
+
 
 // ./remoteClient -i 127.0.0.1 -p 12500 -d Server
 // ./remoteClient -i linux12.di.uoa.gr -p 12500 -d Server

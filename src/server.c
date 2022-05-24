@@ -7,18 +7,15 @@
 #include <unistd.h>	         /* fork */		
 #include <stdlib.h>	         /* exit */
 #include <ctype.h>	         /* toupper */
-#include <signal.h>          /* signal */
 #include <pthread.h>   /* For threads  */
+
 #define perror2(s,e) fprintf(stderr, "%s: %s\n", s, strerror(e))
 
-
-void *child_server(void *argp);
-
-struct thread_funct_args{
-    int newsock;
-};
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic5-Sockets.pdf
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
 #include "validation.h"
+#include "server_funcs.h"
 
 // ./dataServer -p 12500 -s 2 -q 2 -b 512
 int main(int argc, char* argv[]) 
@@ -68,46 +65,23 @@ int main(int argc, char* argv[])
         printf("Accepted connection from %s\n", rem->h_name);
 
         // creation of communication thread
-        pthread_t thr;
+        pthread_t communication_thread;
         int err, status;
-        struct thread_funct_args args;
+        struct thread_funct_args args;  // passing struct of arguments to thread creation function
         args.newsock  = newsock;
-        if (err = pthread_create(&thr, NULL, child_server, (void *) &args)) { /* New thread */
-            perror2("pthread_create", err);
+        if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
+            perror2("pthread_create @ server.c line 78", err);
             exit(1);
-            }
+        }
 
-        if (err = pthread_join(thr, (void **) &status)) { /* Wait for thread */
-            perror2("pthread_join", err); /* termination */
+        if (err = pthread_join(communication_thread, (void **) &status)) { /* Wait for thread */
+            perror2("pthread_join @ server.c line 83", err); /* termination */
             exit(1);
-            }
-    	// switch (fork()) {    /* Create child for serving client */
-    	// case -1:     /* Error */
-    	//     perror("thread @ line 65\n"); break;
-    	// case 0:	     /* Child process */
-    	//     close(sock); child_server(newsock);
-    	//     exit(0);
-    	// }
+        }
     	close(newsock); /* parent closes socket to client */
     }
 
     return 0;
-}
-
-void * child_server(void *argp) {
-    struct thread_funct_args *args = (struct thread_funct_args*) argp;
-    char buf[1];
-    while(read(args->newsock, buf, 1) > 0) {  /* Receive 1 char */
-    	putchar(buf[0]);           /* Print received char */
-    	/* Capitalize character */
-    	buf[0] = toupper(buf[0]);
-    	/* Reply */
-    	if (write(args->newsock, buf, 1) < 0)
-    	    perror_exit("write @ child_server line 84\n");
-    }
-    printf("Closing connection.\n");
-    close(args->newsock);	  /* Close socket */
-    pthread_exit(NULL); 
 }
 
 
