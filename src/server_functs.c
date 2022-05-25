@@ -3,6 +3,7 @@
 void * receive_dir_name(void *argp) {
     struct thread_funct_args *args = (struct thread_funct_args*) argp; // coping passed argument struct
     char buf[512];
+    memset(buf, 0, 512);
     int err;
     printf("Given directory name is: ");
     while(read(args->newsock, buf, sizeof(buf)) > 0) {  /* Receive 1 char */
