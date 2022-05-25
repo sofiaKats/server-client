@@ -4,7 +4,7 @@ void * receive_dir_name(void *argp) {
     struct thread_funct_args *args = (struct thread_funct_args*) argp; // coping passed argument struct
     char buf[1];
     int err;
-    printf("Given directiry name is:\n");
+    printf("Given directiry name is: ");
     while(read(args->newsock, buf, 1) > 0) {  /* Receive 1 char */
     	putchar(buf[0]);           /* Print received char */
     	/* Capitalize character */
