@@ -55,6 +55,7 @@ int client_valid_args(int argc, char** argv, char* server_ip, int *server_port, 
 }
 
 void perror_exit(char *message) {
-    perror(message);
+    // perror(message);
+    fprintf(stderr, "%s\n", message);
     exit(EXIT_FAILURE);
 }

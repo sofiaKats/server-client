@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     { 
         clientlen = sizeof(client);
         /* accept connection */
-    	if ((newsock = accept(sock, clientptr, &clientlen)) < 0) perror_exit("accept");
+    	if ((newsock = accept(sock, clientptr, &clientlen)) < 0) perror_exit("accept@ server.c line 58");
 
     	/* Find client's address */
         if ((rem = gethostbyaddr((char *) &client.sin_addr.s_addr, sizeof(client.sin_addr.s_addr), client.sin_family)) == NULL) {
@@ -69,15 +69,18 @@ int main(int argc, char* argv[])
         int err, status;
         struct thread_funct_args args;  // passing struct of arguments to thread creation function
         args.newsock  = newsock;
+        memset(args.directory, 0, 512);
         if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
             perror2("pthread_create @ server.c line 78", err);
             exit(1);
         }
 
-        if (err = pthread_join(communication_thread, (void **) &status)) { /* Wait for thread */
+        if (err = pthread_join(communication_thread, NULL/*, (void **) &status*/)) { /* Wait for thread */
             perror2("pthread_join @ server.c line 83", err); /* termination */
             exit(1);
         }
+
+        printf("DIRECTORY(@ server.c): %s\n", args.directory );
     	close(newsock); /* parent closes socket to client */
     }
 

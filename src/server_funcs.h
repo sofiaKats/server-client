@@ -11,9 +11,11 @@
 #include <stdlib.h>	         /* exit */
 #include <ctype.h>	         /* toupper */
 #include <pthread.h>   /* For threads  */
+#include <string.h>
 
 typedef struct thread_funct_args{
     int newsock;
+    char directory[512];
 }thread_funct_args;
 
 // receives directory name from client
