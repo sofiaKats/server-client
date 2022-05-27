@@ -15,7 +15,7 @@
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
 #include "validation.h"
-#include "server_functs.h"
+#include "directory.h"
 
 // ./dataServer -p 12500 -s 2 -q 2 -b 512
 int main(int argc, char* argv[]) 

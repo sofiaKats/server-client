@@ -1,4 +1,4 @@
-#include "server_functs.h"
+#include "directory.h"
 
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
 

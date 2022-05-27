@@ -1,5 +1,5 @@
-#ifndef SERVER_FUNCTS_H
-#define SERVER_FUNCTS_H
+#ifndef DIRECTORY_H
+#define DIRECTORY_H
 
 #include <stdio.h>
 #include <sys/wait.h>	     /* sockets */
@@ -27,4 +27,4 @@ void *receive_dir_name(void *argp);
 // given a directory name, the function recursively stores filenames to given queue
 void recursive_list_dirs(char dirname[]);
 
-#endif //SERVER_FUNCTS_H
+#endif //DIRECTORY_H
