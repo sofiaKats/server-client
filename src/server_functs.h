@@ -14,6 +14,8 @@
 #include <string.h>
 #include  <dirent.h>
 
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
+
 typedef struct thread_funct_args{
     int newsock;
     char directory[512];

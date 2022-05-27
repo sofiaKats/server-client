@@ -1,5 +1,7 @@
 #include "server_functs.h"
 
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
+
 void * receive_dir_name(void *argp) {
     struct thread_funct_args *args = (struct thread_funct_args*) argp; // coping passed argument struct
     char buf[512];
