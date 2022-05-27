@@ -25,7 +25,6 @@ int main(int argc, char* argv[])
     printf("serverIP: %s\nport: %d\ndirectory: %s\n", server_ip, server_port, directory);
 
     int sock, i;
-    //char buf[256];
     struct sockaddr_in server;
     struct sockaddr *serverptr = (struct sockaddr*)&server;
     struct hostent *rem;
