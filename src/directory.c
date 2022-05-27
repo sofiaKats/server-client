@@ -7,7 +7,6 @@ void * receive_dir_name(void *argp) {
     char buf[512];
     memset(buf, 0, 512);
     int err;
-    printf("Given directory name is: ");
     while(read(args->newsock, buf, sizeof(buf)) > 0) { 
         strcpy(args->directory, buf);
     }
@@ -16,7 +15,7 @@ void * receive_dir_name(void *argp) {
     pthread_exit(NULL); 
 }
 
-void recursive_list_dirs(char dirname[])
+void recursive_list_dirs(char dirname[], Queue** queue, int newsock)
 {
 	DIR 	       *dir_ptr;
 	struct 	dirent *direntp;
@@ -33,12 +32,13 @@ void recursive_list_dirs(char dirname[])
 			// item is not a directory
 			if(direntp->d_type != DT_DIR) {
 				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue
-				printf("%s\n", buf) ;
+				//printf("%s\n", buf) ;
+				Queue_Push(queue, buf, newsock);
 			}
 			else { // item is a directory
 				char sub_dir[1024];
 				sprintf(sub_dir, "%s/%s", dirname, direntp->d_name);
-				recursive_list_dirs(sub_dir);
+				recursive_list_dirs(sub_dir, queue, newsock);
 
 			}
 		}

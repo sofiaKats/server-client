@@ -23,12 +23,16 @@ Queue* Create_Queue(void)
 }
 
 
-void Queue_Push(Queue** queue, int item)
+void Queue_Push(Queue** queue, char* item, int socket)
 {
     // Creation of newnode
 	Q_node * NewNode;
 	NewNode = malloc(sizeof(Q_node));
-	NewNode->element = item;
+    // copy filepath to node
+	memset(NewNode->filepath, 0, 512);
+    strcpy(NewNode->filepath, item);
+    // insert socket to node
+    NewNode->socket = socket;
 	NewNode->next = NULL;
 	
 	(*queue)->size++;
@@ -64,6 +68,10 @@ int queue_is_empty(Queue* queue)
     return (queue->rear == NULL);
 }
 
+int Get_QueueSize(Queue* queue) {
+    return queue->size;
+}
+
 
 void Print_Queue(Queue* queue)
 {
@@ -76,7 +84,7 @@ void Print_Queue(Queue* queue)
 	current = queue->rear;
 
 	while(current != NULL){
-		printf("%d",current->element);
+		printf("< %s, %d >",current->filepath, current->socket);
 		if(current->next != NULL) {
 			printf(",");
 		}

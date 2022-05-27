@@ -6,7 +6,7 @@ BLD = ./obj
 
 # Compiler options
 CC = gcc
-CFLAGS = -Wno-unused-parameter -g -pthread
+CFLAGS = -Wno-unused-parameter -g -pthread -w
 
 # Executable file names
 EXE_DATASERVER = ./dataServer

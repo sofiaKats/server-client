@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <sys/wait.h>	     /* sockets */
 #include <sys/types.h>	     /* sockets */
@@ -16,6 +17,7 @@
 
 #include "validation.h"
 #include "directory.h"
+#include "queue.h"
 
 // ./dataServer -p 12500 -s 2 -q 2 -b 512
 int main(int argc, char* argv[]) 
@@ -80,10 +82,14 @@ int main(int argc, char* argv[])
             exit(1);
         }
 
-        printf("\n   DIRECTORY CONTENTS:   \n\n");
-        recursive_list_dirs(args.directory);
+        // printf("\n   DIRECTORY CONTENTS:   \n\n");
+        // recursive_list_dirs(args.directory);
+        Queue* queue = Create_Queue();
+        // DONT FORGET TO CHECK QUEUE SIZE
+        recursive_list_dirs(args.directory, &queue, args.newsock);
+        Print_Queue(queue);
 
-        printf("\nClosing connection.\n");
+        printf("\nClosing connection.\n\n\n");
     	close(newsock); /* parent closes socket to client */
     }
 
