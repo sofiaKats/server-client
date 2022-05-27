@@ -80,7 +80,6 @@ int main(int argc, char* argv[])
             exit(1);
         }
 
-        printf("DIRECTORY(@ server.c): %s\n", args.directory );
     	close(newsock); /* parent closes socket to client */
     }
 

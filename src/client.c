@@ -49,21 +49,8 @@ int main(int argc, char* argv[])
 	   perror_exit("connect @ client.c line 46\n");
     printf("Connecting to %s on port %d\n", server_ip, server_port);
 
-    //  do 
-    //  {
-    	//printf("Give input string: ");
-    	//fgets(buf, sizeof(buf), stdin);	/* Read from stdin*/
-    	for(i=0; directory[i] != '\0'; i++) { /* For every char */
-    	    /* Send i-th character */
-        	if (write(sock, directory + i, 1) < 0)
-        	   perror_exit("write");
-            /* receive i-th character transformed */
-        	// if (read(sock, buf + i, 1) < 0)
-        	//     perror_exit("read");   
-    	}
-    	//printf("Received string: %s", buf);
-
-    //} while (strcmp(buf, "END\n") != 0); /* Finish on "end" */
+    // write directory name to be copied to server
+    if (write(sock, directory, strlen(directory)) < 0) perror_exit("write @client.c line 52\n");
     
     close(sock);                 /* Close socket and exit */
     return 0;
