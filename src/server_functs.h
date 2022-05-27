@@ -1,5 +1,5 @@
-#ifndef SERVER_FUNCS_H
-#define SERVER_FUNCS_H
+#ifndef SERVER_FUNCTS_H
+#define SERVER_FUNCTS_H
 
 #include <stdio.h>
 #include <sys/wait.h>	     /* sockets */
@@ -12,6 +12,7 @@
 #include <ctype.h>	         /* toupper */
 #include <pthread.h>   /* For threads  */
 #include <string.h>
+#include  <dirent.h>
 
 typedef struct thread_funct_args{
     int newsock;
@@ -21,4 +22,6 @@ typedef struct thread_funct_args{
 // receives directory name from client
 void *receive_dir_name(void *argp);
 
-#endif //SERVER_FUNCS_H
+void recursive_list_dirs(char dirname[]);
+
+#endif //SERVER_FUNCTS_H
