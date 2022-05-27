@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
         printf("\n   DIRECTORY CONTENTS:   \n\n");
         recursive_list_dirs(args.directory);
 
+        printf("\nClosing connection.\n");
     	close(newsock); /* parent closes socket to client */
     }
 

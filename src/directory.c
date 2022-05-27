@@ -12,7 +12,6 @@ void * receive_dir_name(void *argp) {
         strcpy(args->directory, buf);
     }
     printf("directory name received by server(dlt: server_funct.c line 13): %s\n", args->directory);
-    printf("\nClosing connection.\n");
     close(args->newsock);	  /* Close socket */
     pthread_exit(NULL); 
 }
