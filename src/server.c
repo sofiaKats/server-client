@@ -80,6 +80,9 @@ int main(int argc, char* argv[])
             exit(1);
         }
 
+        printf("\n   DIRECTORY CONTENTS:   \n\n");
+        recursive_list_dirs(args.directory);
+
     	close(newsock); /* parent closes socket to client */
     }
 
