@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
         int err, status;
         struct thread_funct_args args;  // passing struct of arguments to thread creation function
         args.newsock  = newsock;
-        memset(args.directory, 0, 512);
+        memset(args.directory, 0, 512); //directory name written by client will be stored here
         if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
             perror2("pthread_create @ server.c line 78", err);
             exit(1);
