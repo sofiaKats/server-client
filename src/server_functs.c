@@ -31,9 +31,12 @@ void recursive_list_dirs(char dirname[])
 		{
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
 			memset(buf, 0, sizeof(buf));
-			sprintf(buf, "%s", direntp->d_name);
-			printf("%s\n", direntp->d_name) ;
-			if(direntp->d_type == DT_DIR) { // item is a directory
+			// item is not a directory
+			if(direntp->d_type != DT_DIR) {
+				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue
+				printf("%s\n", buf) ;
+			}
+			else { // item is a directory
 				char sub_dir[1024];
 				sprintf(sub_dir, "%s/%s", dirname, direntp->d_name);
 				recursive_list_dirs(sub_dir);
@@ -43,4 +46,3 @@ void recursive_list_dirs(char dirname[])
 		closedir(dir_ptr);
 	}
 }
-
