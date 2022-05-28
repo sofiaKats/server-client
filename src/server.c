@@ -66,11 +66,13 @@ int main(int argc, char* argv[])
         }
         printf("Accepted connection from %s\n", rem->h_name);
 
+        printf("Original Thread %ld before creating another thread\n", pthread_self());
         // creation of communication thread
         pthread_t communication_thread;
         int err, status;
         struct thread_funct_args args;  // passing struct of arguments to thread creation function
         args.newsock  = newsock;
+        args.queue = Create_Queue();
         memset(args.directory, 0, 512); //directory name written by client will be stored here
         if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
             perror2("pthread_create @ server.c line 78", err);
@@ -84,11 +86,12 @@ int main(int argc, char* argv[])
 
         // printf("\n   DIRECTORY CONTENTS:   \n\n");
         // recursive_list_dirs(args.directory);
-        Queue* queue = Create_Queue();
+        //Queue* queue = Create_Queue();
         // DONT FORGET TO CHECK QUEUE SIZE
-        recursive_list_dirs(args.directory, &queue, args.newsock);
-        Print_Queue(queue);
+        //recursive_list_dirs(args.directory, &queue, args.newsock);
+        Print_Queue(args.queue);
 
+        printf("Original Thread %ld just before exiting\n", pthread_self());
         printf("\nClosing connection.\n\n\n");
     	close(newsock); /* parent closes socket to client */
     }

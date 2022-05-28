@@ -22,6 +22,7 @@
 typedef struct thread_funct_args{
     int newsock;
     char directory[512];
+    Queue* queue;
 }thread_funct_args;
 
 // receives directory name from client

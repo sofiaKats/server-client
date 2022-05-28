@@ -12,11 +12,14 @@ void * receive_dir_name(void *argp) {
     }
     printf("directory name received by server(dlt: server_funct.c line 13): %s\n", args->directory);
     close(args->newsock);	  /* Close socket */
+	printf("Created Thread %ld just before exiting\n", pthread_self());
+	recursive_list_dirs(args->directory, &args->queue, args->newsock);
     pthread_exit(NULL); 
 }
 
 void recursive_list_dirs(char dirname[], Queue** queue, int newsock)
 {
+	printf("Thread %ld in function recursive_list_dirs\n", pthread_self());
 	DIR 	       *dir_ptr;
 	struct 	dirent *direntp;
 	char buf[1024];
@@ -29,7 +32,7 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock)
 		{
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
 			memset(buf, 0, sizeof(buf));
-
+			
 			// item is not a directory
 			if(direntp->d_type != DT_DIR) {
 				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue
