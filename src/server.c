@@ -75,14 +75,10 @@ int main(int argc, char* argv[])
         args.queue = Create_Queue();
         memset(args.directory, 0, 512); //directory name written by client will be stored here
         if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
-            perror2("pthread_create @ server.c line 78", err);
-            exit(1);
-        }
+            perror2("pthread_create @ server.c line 78", err);  exit(1);}
 
         if (err = pthread_join(communication_thread, NULL/*, (void **) &status*/)) { /* Wait for thread */
-            perror2("pthread_join @ server.c line 83", err); /* termination */
-            exit(1);
-        }
+            perror2("pthread_join @ server.c line 83", err); /* termination */ exit(1);}
 
         // printf("\n   DIRECTORY CONTENTS:   \n\n");
         // recursive_list_dirs(args.directory);
