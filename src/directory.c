@@ -13,7 +13,7 @@ void * receive_dir_name(void *argp) {
     printf("directory name received by server(dlt: server_funct.c line 13): %s\n", args->directory);
     close(args->newsock);	  /* Close socket */
 	recursive_list_dirs(args->directory, &args->queue, args->newsock);
-	printf("Created Thread %ld just before exiting\n", pthread_self());
+	printf("Thread %ld just before exiting\n", pthread_self());
     pthread_exit(NULL); 
 }
 
