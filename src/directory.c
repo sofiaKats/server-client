@@ -29,6 +29,7 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock)
 		{
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
 			memset(buf, 0, sizeof(buf));
+
 			// item is not a directory
 			if(direntp->d_type != DT_DIR) {
 				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue

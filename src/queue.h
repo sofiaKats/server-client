@@ -27,6 +27,9 @@ void Queue_Push(Queue** queue, char* item, int socket);
 // Delete front item from queue
 void Queue_Pop(Queue** queue);
 
+// returns next item to be poped in the queue
+Q_node* Queue_Top(Queue* queue);
+ 
 // Print elements in queue
 void Print_Queue(Queue* queue);
 

@@ -63,6 +63,16 @@ void Queue_Pop(Queue** queue)
     free(temp);
 }
 
+Q_node* Queue_Top(Queue* queue)
+{
+    // Queue follows the order of First In First Out (FIFO)
+    if(queue->rear == NULL) {
+        printf("Queue top doesn't exist, nothing to delete here.\n");
+        return;
+    }
+    return queue->rear;
+}
+
 int queue_is_empty(Queue* queue)
 {
     return (queue->rear == NULL);
