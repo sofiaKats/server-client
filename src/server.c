@@ -96,12 +96,6 @@ int main(int argc, char* argv[])
             if (err = pthread_join(*(worker_threads+i), NULL)) {
                 perror2("pthread_join", err); exit(1);}
         }
-        // printf("\n   DIRECTORY CONTENTS:   \n\n");
-        // recursive_list_dirs(args.directory);
-        //Queue* queue = Create_Queue();
-        // DONT FORGET TO CHECK QUEUE SIZE
-        //recursive_list_dirs(args.directory, &queue, args.newsock);
-        //Print_Queue(args.queue);
 
         printf("\nClosing connection.\n\n\n");
     	close(newsock); /* parent closes socket to client */
