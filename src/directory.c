@@ -5,10 +5,6 @@
 pthread_mutex_t mtx;
 pthread_cond_t cond_nonempty;
 pthread_cond_t cond_nonfull;
-// since i am creating the consumer first i want to make sure direntp
-// was used at least once by producer(communication thread) so that 
-// the consumer can enter while loop and the program doesn't freeze
-struct 	dirent *direntp;
 
 void InitializeCondMtx(void)
 {
@@ -42,6 +38,7 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 {
 	printf("Thread: %ld]: About to scan directory %s\n", pthread_self(), dirname);
 	DIR 	       *dir_ptr;
+	struct 	dirent *direntp;
 	char buf[1024];
 
 	if ( ( dir_ptr = opendir( dirname ) ) == NULL ) {
@@ -52,7 +49,6 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 	{
 		while ( ( direntp=readdir(dir_ptr) ) != NULL )
 		{
-			//printf("IN @ recursive producer direntp_in_usage=%d\n",flag);
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
 			memset(buf, 0, sizeof(buf));
 			
