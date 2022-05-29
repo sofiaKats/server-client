@@ -44,8 +44,10 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 	DIR 	       *dir_ptr;
 	char buf[1024];
 
-	if ( ( dir_ptr = opendir( dirname ) ) == NULL )
-			fprintf(stderr, "cannot open %s \n",dirname);
+	if ( ( dir_ptr = opendir( dirname ) ) == NULL ) {
+		fprintf(stderr, "cannot open %s \n",dirname);
+		exit(1);
+	}
 	else 
 	{
 		while ( ( direntp=readdir(dir_ptr) ) != NULL )
