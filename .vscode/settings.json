@@ -3,6 +3,7 @@
         "unistd.h": "c",
         "validation.h": "c",
         "wait.h": "c",
-        "server_functs.h": "c"
+        "server_functs.h": "c",
+        "random": "c"
     }
 }
