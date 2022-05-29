@@ -66,30 +66,46 @@ int main(int argc, char* argv[])
         }
         printf("Accepted connection from %s\n", rem->h_name);
 
-        printf("Original Thread %ld before creating another thread\n", pthread_self());
         // creation of communication thread
         pthread_t communication_thread;
         int err, status;
         struct thread_funct_args args;  // passing struct of arguments to thread creation function
         args.newsock  = newsock;
         args.queue = Create_Queue();
+        args.queue_size = queue_size;
         memset(args.directory, 0, 512); //directory name written by client will be stored here
+        InitializeCondMtx();
+
+         //array of worker threads
+        pthread_t *worker_threads;
+        if ((worker_threads = malloc(thread_pool_size * sizeof(pthread_t))) == NULL) {
+            perror("malloc");  exit(1); }
+
+        for (int i=0 ; i<thread_pool_size ; i++) {
+            if (err = pthread_create(worker_threads+i, NULL, consumer, (void *) &args)) {
+                perror2("pthread_create", err);   exit(1);} 
+        }
+
         if (err = pthread_create(&communication_thread, NULL, receive_dir_name, (void *) &args)) { /* New thread */
             perror2("pthread_create @ server.c line 78", err);  exit(1);}
 
         if (err = pthread_join(communication_thread, NULL/*, (void **) &status*/)) { /* Wait for thread */
             perror2("pthread_join @ server.c line 83", err); /* termination */ exit(1);}
-
+        
+        for (int i=0 ; i<thread_pool_size ; i++) {
+            if (err = pthread_join(*(worker_threads+i), NULL)) {
+                perror2("pthread_join", err); exit(1);}
+        }
         // printf("\n   DIRECTORY CONTENTS:   \n\n");
         // recursive_list_dirs(args.directory);
         //Queue* queue = Create_Queue();
         // DONT FORGET TO CHECK QUEUE SIZE
         //recursive_list_dirs(args.directory, &queue, args.newsock);
-        Print_Queue(args.queue);
+        //Print_Queue(args.queue);
 
-        printf("Original Thread %ld just before exiting\n", pthread_self());
         printf("\nClosing connection.\n\n\n");
     	close(newsock); /* parent closes socket to client */
+        DestroyCondMtx();
     }
 
     return 0;

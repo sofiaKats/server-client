@@ -23,12 +23,27 @@ typedef struct thread_funct_args{
     int newsock;
     char directory[512];
     Queue* queue;
+    int queue_size;
 }thread_funct_args;
 
 // receives directory name from client
 void *receive_dir_name(void *argp);
 
 // given a directory name, the function recursively stores filenames to given queue
-void recursive_list_dirs(char dirname[], Queue** queue, int newsock);
+void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_size);
+
+// Same function as the producer-cosumer place function 
+void place(char* filepath, Queue** queue, int newsock, int queue_size);
+
+// worker thread function
+void * consumer(void *argp);
+
+int obtain(Queue** queue);
+
+// Initialize thread conds and mutexes
+void InitializeCondMtx(void);
+
+// Destroy thread conds and mutexes
+void DestroyCondMtx(void);
 
 #endif //DIRECTORY_H
