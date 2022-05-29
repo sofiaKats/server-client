@@ -90,11 +90,12 @@ void place(char* filepath, Queue** queue, int newsock, int queue_size) {
 void * consumer(void *argp)
 {
 	struct thread_funct_args *args = (struct thread_funct_args*) argp;
-    while(Get_QueueSize(args->queue) >= 0) {
+    //while(Get_QueueSize(args->queue) >= 0) {
+	do {
 		obtain(&args->queue);
 		pthread_cond_signal(&cond_nonfull);
 		usleep(500000);
-	}
+	} while(Get_QueueSize(args->queue) > 0);
     pthread_exit(0); // worker thread
 }
 
