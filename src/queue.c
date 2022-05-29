@@ -13,6 +13,7 @@ Queue* Create_Queue(void)
     // allocation of memory for first and last node of deque
     queue->front = malloc(sizeof(Q_node));
     queue->rear = malloc(sizeof(Q_node));
+    pthread_mutex_init(&(queue->mutex), 0);
 
     // Initialization of empty data members
     queue->size = 0;
@@ -25,6 +26,8 @@ Queue* Create_Queue(void)
 
 void Queue_Push(Queue** queue, char* item, int socket)
 {
+    pthread_mutex_lock(&((*queue)->mutex));
+
     // Creation of newnode
 	Q_node * NewNode;
 	NewNode = malloc(sizeof(Q_node));
@@ -45,13 +48,16 @@ void Queue_Push(Queue** queue, char* item, int socket)
         (*queue)->front->next = NewNode;
 		(*queue)->front = NewNode;	
 	}
+    pthread_mutex_unlock(&((*queue)->mutex));
 }
 
 
 void Queue_Pop(Queue** queue)
 {// Queue follows the order of First In First Out (FIFO)
+    pthread_mutex_lock(&((*queue)->mutex));
     if((*queue)->rear == NULL) {
-        printf("Queue already empty, nothing to delete here.\n");
+        //printf("Queue already empty, nothing to delete here.\n");
+        pthread_mutex_unlock(&((*queue)->mutex));
         return;
     }
 
@@ -60,16 +66,18 @@ void Queue_Pop(Queue** queue)
 
     (*queue)->rear = (*queue)->rear->next;
     (*queue)->size--;
+    if((*queue)->size == 0) (*queue)->rear = (*queue)->front = NULL;
     free(temp);
+    pthread_mutex_unlock(&((*queue)->mutex));
 }
 
 Q_node* Queue_Top(Queue* queue)
 {
     // Queue follows the order of First In First Out (FIFO)
-    if(queue->rear == NULL) {
-        printf("Queue top doesn't exist, nothing to delete here.\n");
-        return;
-    }
+    // if(queue->rear == NULL) {
+    //     //printf("Queue top doesn't exist.\n");
+    //     return;
+    // }
     return queue->rear;
 }
 

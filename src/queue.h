@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 
 
 typedef struct Q_node {
@@ -16,6 +17,7 @@ typedef struct Queue{
     int size;
     Q_node* front;
     Q_node* rear;
+    pthread_mutex_t mutex; // making thread safe queue
 }Queue;
 
 // Queue initialization and creation
