@@ -28,7 +28,6 @@ void * receive_dir_name(void *argp) {
     while(read(args->newsock, buf, sizeof(buf)) > 0) { 
         strcpy(args->directory, buf);
     }
-    //printf("directory name received by server(dlt: server_funct.c line 13): %s\n", args->directory);
     close(args->newsock);	  /* Close socket */
 	recursive_list_dirs(args->directory, &args->queue, args->newsock, args->queue_size);
     pthread_exit(NULL); 
@@ -55,8 +54,6 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 			// item is not a directory
 			if(direntp->d_type != DT_DIR) {
 				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue
-				//printf("%s\n", buf) ;
-				//Queue_Push(queue, buf, newsock);
 				// producer functionality
 				place(buf, queue, newsock, queue_size);
             	pthread_cond_signal(&cond_nonempty);
@@ -78,7 +75,6 @@ void place(char* filepath, Queue** queue, int newsock, int queue_size) {
     while ( Get_QueueSize(*queue) >= queue_size ) {
         pthread_cond_wait(&cond_nonfull, &mtx);
     }
-	//Print_Queue(*queue);
 	printf("[Thread: %ld]: Adding file %s to the queue…\n", pthread_self(), filepath);
 	Queue_Push(queue, filepath, newsock);
     pthread_mutex_unlock(&mtx);
@@ -88,7 +84,6 @@ void place(char* filepath, Queue** queue, int newsock, int queue_size) {
 void * consumer(void *argp)
 {
 	struct thread_funct_args *args = (struct thread_funct_args*) argp;
-    //while(Get_QueueSize(args->queue) >= 0) {
 	do {
 		obtain(&args->queue);
 		pthread_cond_signal(&cond_nonfull);
@@ -103,7 +98,6 @@ int obtain(Queue** queue) {
         pthread_cond_wait(&cond_nonempty, &mtx);
     }
 	Q_node* temp = Queue_Top(*queue);
-	//Print_Queue(*queue);
 	printf("[Thread: %ld]: Received task: <%s, %d>\n", pthread_self(), temp->filepath, temp->socket);
 	Queue_Pop(queue);
     pthread_mutex_unlock(&mtx);

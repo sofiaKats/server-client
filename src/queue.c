@@ -23,7 +23,6 @@ Queue* Create_Queue(void)
 	return queue;
 }
 
-
 void Queue_Push(Queue** queue, char* item, int socket)
 {
     pthread_mutex_lock(&((*queue)->mutex));
@@ -73,11 +72,6 @@ void Queue_Pop(Queue** queue)
 
 Q_node* Queue_Top(Queue* queue)
 {
-    // Queue follows the order of First In First Out (FIFO)
-    // if(queue->rear == NULL) {
-    //     //printf("Queue top doesn't exist.\n");
-    //     return;
-    // }
     return queue->rear;
 }
 
