@@ -18,6 +18,7 @@
 #include "queue.h"
 
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
 typedef struct thread_funct_args{
     int newsock;

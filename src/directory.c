@@ -1,6 +1,7 @@
 #include "directory.h"
 
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
 pthread_mutex_t mtx;
 pthread_cond_t cond_nonempty;
