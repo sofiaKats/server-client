@@ -51,6 +51,13 @@ int main(int argc, char* argv[])
     // write directory name to be copied to server
     if (write(sock, directory, strlen(directory)) < 0) perror_exit("write @client.c line 52\n");
     
+    char buffer[512]; memset(buffer, 0, 512);
+    while(read(sock, buffer, sizeof(buffer)) > 0) {
+        buffer[512] = '\0';
+        printf("client received: %s\n", buffer);
+        memset(buffer, 0, 512);
+    }
+
     close(sock);                 /* Close socket and exit */
     return 0;
 }
