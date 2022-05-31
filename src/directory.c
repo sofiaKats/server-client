@@ -26,10 +26,10 @@ void * receive_dir_name(void *argp) {
     char buf[512];
     memset(buf, 0, 512);
     int err;
-    while(read(args->newsock, buf, sizeof(buf)) > 0) { 
+    if(read(args->newsock, buf, sizeof(buf)) > 0) { 
         strcpy(args->directory, buf);
     }
-    close(args->newsock);	  /* Close socket */
+    //close(args->newsock);	  /* Close socket */
 	recursive_list_dirs(args->directory, &args->queue, args->newsock, args->queue_size);
     pthread_exit(NULL); 
 }
@@ -100,6 +100,8 @@ int obtain(Queue** queue) {
     }
 	Q_node* temp = Queue_Top(*queue);
 	printf("[Thread: %ld]: Received task: <%s, %d>\n", pthread_self(), temp->filepath, temp->socket);
+	if(write(temp->socket, temp->filepath, strlen(temp->filepath)) < 0)
+		perror_exit("write @ directory.c line 104\n");
 	Queue_Pop(queue);
     pthread_mutex_unlock(&mtx);
 }
