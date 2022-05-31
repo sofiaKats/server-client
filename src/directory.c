@@ -36,7 +36,7 @@ void * receive_dir_name(void *argp) {
 
 void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_size)
 {
-	printf("Thread: %ld]: About to scan directory %s\n", pthread_self(), dirname);
+	printf("[Thread: %ld]: About to scan directory %s\n", pthread_self(), dirname);
 	DIR 	       *dir_ptr;
 	struct 	dirent *direntp;
 	char buf[1024];
@@ -47,6 +47,8 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 	}
 	else 
 	{
+		if(write(newsock, dirname, strlen(dirname)) < 0)
+					perror_exit("write @ directory.c line 67\n");
 		while ( ( direntp=readdir(dir_ptr) ) != NULL )
 		{
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
