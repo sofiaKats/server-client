@@ -12,6 +12,8 @@
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic5-Sockets.pdf
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
+void sanitize(char *str);
+char * basename (const char *filename);
 
 // ./remoteClient -i 127.0.0.1 -p 12500 -d Server
 // ./remoteClient -i linux12.di.uoa.gr -p 12500 -d Server
@@ -51,10 +53,12 @@ int main(int argc, char* argv[])
     // write directory name to be copied to server
     if (write(sock, directory, strlen(directory)) < 0) perror_exit("write @client.c line 52\n");
     
+    char* dir = basename(directory); // extracting directory name
     char buffer[512]; memset(buffer, 0, 512);
     while(read(sock, buffer, sizeof(buffer)) > 0) {
         buffer[512] = '\0';
-        printf("client received: %s\n", buffer);
+        char* token = strstr(buffer, dir);
+        printf("client received: %s\n", token);
         memset(buffer, 0, 512);
     }
 
@@ -62,4 +66,17 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+// char * basename (const char *filename)
+// {
+//   char *p = strrchr (filename, '/');
+//   return p ? p + 1 : (char *) filename;
+// }
 
+// void sanitize(char *str)
+// {
+// 	char *src, *dest;
+// 	for ( src = dest = str ; *src ; src++ )
+// 		if (*src == '_' || *src == '-' || isalnum(*src) ) //acceptable chars for dirname
+// 			*dest++ = *src;
+// 	*dest = '\0';
+// }
