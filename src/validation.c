@@ -54,6 +54,19 @@ int client_valid_args(int argc, char** argv, char* server_ip, int *server_port, 
     return 1; // all arguments are ok
 }
 
+int check_if_directory_or_filename(char *str)
+{
+    char *src, *dest;
+	for ( src = dest = str ; *src ; src++ )
+    {
+        if (*src == '#') return 1;
+		*dest++ = *src;
+    }
+	*dest = '\0';
+    return 0;
+}
+
+
 void perror_exit(char *message) {
     // perror(message);
     fprintf(stderr, "%s\n", message);

@@ -7,7 +7,7 @@ void receive_filenames(char* directory, int sock) {
     while(read(sock, buffer, sizeof(buffer)) > 0) {
         buffer[512] = '\0';
         // buffer received directory
-        if(sanitize(buffer)) {
+        if(check_if_directory_or_filename(buffer)) {
             char* dirname = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
             printf("Received: %s\n", dirname);
             errno = 0;
@@ -34,21 +34,6 @@ void receive_filenames(char* directory, int sock) {
         
         memset(buffer, 0, 512);
     }
-}
-
-int sanitize(char *str)
-{
-    char *src, *dest;
-	for ( src = dest = str ; *src ; src++ )
-    {
-        if (*src == '#') {
-            //printf("client received dir: %s\n", src);
-            return 1;
-        }
-		*dest++ = *src;
-    }
-	*dest = '\0';
-    return 0;
 }
 
 // char * basename (const char *filename)
