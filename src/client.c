@@ -8,12 +8,13 @@
 #include <string.h>	         /* strlen */
 
 #include "validation.h"
+#include "create_directory.h"
 
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic5-Sockets.pdf
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
 
-void sanitize(char *str);
 char * basename (const char *filename);
+void sanitize(char *str);
 
 // ./remoteClient -i 127.0.0.1 -p 12500 -d Server
 // ./remoteClient -i linux12.di.uoa.gr -p 12500 -d Server
@@ -57,7 +58,7 @@ int main(int argc, char* argv[])
     char buffer[512]; memset(buffer, 0, 512);
     while(read(sock, buffer, sizeof(buffer)) > 0) {
         buffer[512] = '\0';
-        char* token = strstr(buffer, dir);
+        char* token = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
         printf("client received: %s\n", token);
         memset(buffer, 0, 512);
     }

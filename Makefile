@@ -15,7 +15,7 @@ EXE_REMOTECLIENT = ./remoteClient
 # .o files needed
 COMMON_OBJS += $(SRC)/validation.o
 OBJS_SERVER =  $(SRC)/server.o $(SRC)/directory.o $(SRC)/queue.o
-OBJS_CLIENT =  $(SRC)/client.o
+OBJS_CLIENT =  $(SRC)/client.o $(SRC)/create_directory.o
 
 # Build executables
 all: $(EXE_DATASERVER) $(EXE_REMOTECLIENT)
