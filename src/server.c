@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
         args.newsock  = newsock;
         args.queue = Create_Queue();
         args.queue_size = queue_size;
+        args.block_size = block_size;
         memset(args.directory, 0, 512); //directory name written by client will be stored here
         InitializeCondMtx();
 

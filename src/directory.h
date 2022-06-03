@@ -25,6 +25,7 @@ typedef struct thread_funct_args{
     char directory[512];
     Queue* queue;
     int queue_size;
+    int block_size;
 }thread_funct_args;
 
 // receives directory name from client
@@ -39,7 +40,7 @@ void place(char* filepath, Queue** queue, int newsock, int queue_size);
 // worker thread function
 void * consumer(void *argp);
 
-int obtain(Queue** queue);
+int obtain(Queue** queue, int block_size);
 
 // Initialize thread conds and mutexes
 void InitializeCondMtx(void);
