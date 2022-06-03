@@ -20,6 +20,7 @@
 #include "queue.h"
 
 // ./dataServer -p 12500 -s 2 -q 2 -b 512
+// valgrind --track-origins=yes ./dataServer -p 12500 -s 2 -q 2 -b 512
 int main(int argc, char* argv[]) 
 {
     int port, thread_pool_size, queue_size, block_size;

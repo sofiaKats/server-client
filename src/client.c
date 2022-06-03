@@ -12,12 +12,12 @@
 
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic5-Sockets.pdf
 // code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic6-Threads.pdf
+// code used from: cgi.di.uoa.gr/~mema/courses/k24/lectures/topic3-UnixFileCommands.pdf
 
-char * basename (const char *filename);
-void sanitize(char *str);
 
 // ./remoteClient -i 127.0.0.1 -p 12500 -d Server
 // ./remoteClient -i linux12.di.uoa.gr -p 12500 -d Server
+// valgrind --track-origins=yes ./remoteClient -i linux12.di.uoa.gr -p 12500 -d ../code-6-set
 int main(int argc, char* argv[]) 
 {
     int server_port;
@@ -54,30 +54,8 @@ int main(int argc, char* argv[])
     // write directory name to be copied to server
     if (write(sock, directory, strlen(directory)) < 0) perror_exit("write @client.c line 52\n");
     
-    char* dir = basename(directory); // extracting directory name
-    char buffer[512]; memset(buffer, 0, 512);
-    while(read(sock, buffer, sizeof(buffer)) > 0) {
-        buffer[512] = '\0';
-        char* token = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
-        printf("client received: %s\n", token);
-        memset(buffer, 0, 512);
-    }
+    receive_filenames(directory, sock);
 
     close(sock);                 /* Close socket and exit */
     return 0;
 }
-
-// char * basename (const char *filename)
-// {
-//   char *p = strrchr (filename, '/');
-//   return p ? p + 1 : (char *) filename;
-// }
-
-// void sanitize(char *str)
-// {
-// 	char *src, *dest;
-// 	for ( src = dest = str ; *src ; src++ )
-// 		if (*src == '_' || *src == '-' || isalnum(*src) ) //acceptable chars for dirname
-// 			*dest++ = *src;
-// 	*dest = '\0';
-// }

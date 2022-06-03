@@ -47,8 +47,13 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 	}
 	else 
 	{
-		if(write(newsock, dirname, strlen(dirname)) < 0)
-					perror_exit("write @ directory.c line 67\n");
+		char tempdir[512]; sprintf(tempdir, "#%s", dirname);
+		// if(write(newsock, tempdir, strlen(tempdir)) < 0)
+		// 			perror_exit("write @ directory.c line 52\n");
+		place(tempdir, queue, newsock, queue_size);
+        pthread_cond_signal(&cond_nonempty);
+		usleep(300000);
+
 		while ( ( direntp=readdir(dir_ptr) ) != NULL )
 		{
 			if (!strcmp(direntp->d_name, ".") || !strcmp(direntp->d_name, "..")) continue;
@@ -56,11 +61,11 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 			
 			// item is not a directory
 			if(direntp->d_type != DT_DIR) {
-				sprintf(buf, "%s/%s", dirname, direntp->d_name); // insert in queue
+				sprintf(buf, "%s/%s", dirname, direntp->d_name); 
 				// producer functionality
 				place(buf, queue, newsock, queue_size);
             	pthread_cond_signal(&cond_nonempty);
-				//usleep(300000);
+				usleep(300000);
 			}
 			else { // item is a directory
 				char sub_dir[1024];
