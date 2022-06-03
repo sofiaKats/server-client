@@ -9,7 +9,7 @@ void receive_filenames(char* directory, int sock) {
         // buffer received directory
         if(sanitize(buffer)) {
             char* dirname = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
-            printf("client received directory: %s\n", dirname);
+            printf("Received: %s\n", dirname);
             errno = 0;
             if (mkdir(dirname, S_IRWXU) == -1) {
                 switch (errno) {
@@ -23,7 +23,7 @@ void receive_filenames(char* directory, int sock) {
         // buffer received file
         else {
             char* filename = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
-            printf("client received: %s\n", filename);
+            printf("Received: %s\n", filename);
             FILE *fp;
             fp  = fopen (filename, "w");
             if ( fp == NULL ) { /* check for error */
@@ -42,7 +42,7 @@ int sanitize(char *str)
 	for ( src = dest = str ; *src ; src++ )
     {
         if (*src == '#') {
-            printf("client received dir: %s\n", src);
+            //printf("client received dir: %s\n", src);
             return 1;
         }
 		*dest++ = *src;
