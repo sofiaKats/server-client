@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DIRECTORY 1
+#define FILENAME 2
+#define CONTENTS 0
+
 // assigns command line arguments to corresponding variable or returns 0 if arguments are invalid
 int server_valid_args(int argc, char **argv, int *port, int *thread_pool_size, int *queue_size, int *block_size);
 

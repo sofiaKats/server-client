@@ -56,14 +56,16 @@ int client_valid_args(int argc, char** argv, char* server_ip, int *server_port, 
 
 int check_if_directory_or_filename(char *str)
 {
-    char *src, *dest;
-	for ( src = dest = str ; *src ; src++ )
-    {
-        if (*src == '#') return 1;
-		*dest++ = *src;
-    }
-	*dest = '\0';
-    return 0;
+    char temp[512]; strcpy(temp, str);
+    // str is a directory
+    if(strstr(temp, "~#@") != NULL) return DIRECTORY;
+
+    // str is a filename
+    memset(temp, 0, 512); strcpy(temp, str);
+    if(strstr(temp, "$^$*") != NULL) return FILENAME;
+
+    // str is contents of file
+    return CONTENTS;
 }
 
 

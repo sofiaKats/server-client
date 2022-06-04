@@ -3,12 +3,17 @@
 void receive_filenames(char* directory, int sock) {
     char* dir = basename(directory); // extracting directory name
     char buffer[512]; memset(buffer, 0, 512);
+    char filename[512], *buf1, *buf2;
+    FILE *fp;
 
     while(read(sock, buffer, sizeof(buffer)) > 0) {
         buffer[512] = '\0';
+        int occurrence = check_if_directory_or_filename(buffer);
         // buffer received directory
-        if(check_if_directory_or_filename(buffer)) {
-            char* dirname = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
+        if( occurrence == DIRECTORY) {
+            char dirname[512];
+            buf1 = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
+            strcpy(dirname, buf1);
             printf("Received: %s\n", dirname);
             errno = 0;
             if (mkdir(dirname, S_IRWXU) == -1) {
@@ -22,34 +27,24 @@ void receive_filenames(char* directory, int sock) {
         }
         // buffer received file
         else {
-            char* filename = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
-            printf("Received: %s\n", filename);
-            FILE *fp;
-            fp  = fopen (filename, "w");
-            if ( fp == NULL ) { /* check for error */
-                printf ("errno = %d \n ", errno);
-                perror ("fopen");
-            } 
+            if(occurrence == FILENAME) {
+                buf2 = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
+                strcpy(filename, buf2);
+                printf("Received: %s\n", filename);
+                // creating the file
+                fp  = fopen (filename, "w");
+                if ( fp == NULL ) { /* check for error */
+                    printf ("errno = %d \n ", errno);
+                    perror ("fopen");
+                } 
+            }
+
+            // buffer received file contents
+            if(occurrence == CONTENTS){
+                //printf("In occurance 0 filename:%s buffer:%s\n", filename, buffer);
+                fprintf(fp,"%s",buffer);
+            }
         }
-        
         memset(buffer, 0, 512);
     }
 }
-
-// char * basename (const char *filename)
-// {
-//   char *p = strrchr (filename, '/');
-//   return p ? p + 1 : (char *) filename;
-// }
-
-// void sanitize(char *str)
-// {
-// 	char *src, *dest;
-// 	for ( src = dest = str ; *src ; src++ )
-//     {
-//         if (*src == '#') printf("client received dir: %s\n", src);
-//         if (*src == '_' || *src == '-' || isalnum(*src) ) //acceptable chars for dirname
-// 			*dest++ = *src;
-//     }
-// 	*dest = '\0';
-// }

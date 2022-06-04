@@ -47,7 +47,7 @@ void recursive_list_dirs(char dirname[], Queue** queue, int newsock, int queue_s
 	}
 	else 
 	{
-		char tempdir[512]; sprintf(tempdir, "#%s", dirname);
+		char tempdir[512]; sprintf(tempdir, "~#@%s", dirname);
 		// if(write(newsock, tempdir, strlen(tempdir)) < 0)
 		// 			perror_exit("write @ directory.c line 52\n");
 		place(tempdir, queue, newsock, queue_size);
@@ -91,24 +91,45 @@ void place(char* filepath, Queue** queue, int newsock, int queue_size) {
 // worker thread function
 void * consumer(void *argp)
 {
+	//printf("mphka1\n");
 	struct thread_funct_args *args = (struct thread_funct_args*) argp;
 	do {
-		obtain(&args->queue);
+		//printf("mphka2\n");
+		obtain(&args->queue, args->block_size);
+		//printf("mphka3\n");
 		pthread_cond_signal(&cond_nonfull);
+		//printf("mphka4\n");
 		usleep(500000);
 	} while(Get_QueueSize(args->queue) > 0);
     pthread_exit(0); // worker thread
 }
 
-int obtain(Queue** queue) {
+int obtain(Queue** queue, int block_size) {
     pthread_mutex_lock(&mtx);
     while (Get_QueueSize(*queue) <= 0) {
         pthread_cond_wait(&cond_nonempty, &mtx);
     }
 	Q_node* temp = Queue_Top(*queue);
 	printf("[Thread: %ld]: Received task: <%s, %d>\n", pthread_self(), temp->filepath, temp->socket);
-	if(write(temp->socket, temp->filepath, strlen(temp->filepath)) < 0)
+	char tempfile[512]; sprintf(tempfile, "$^$*%s", temp->filepath);
+	if(write(temp->socket, tempfile, strlen(tempfile)) < 0)
 		perror_exit("write @ directory.c line 104\n");
+	
+	// checking if it's a file or directory, if its a directory do nothing
+	// if it's a file, open it and send it's contents to client
+	if(check_if_directory_or_filename(tempfile) == FILENAME) {
+		// File pointer to read from file
+		FILE* file = fopen(temp->filepath, "r");
+		if (file == NULL) perror_exit("fopen @ directory.c line 118\n");
+ 
+		char string[block_size];
+		// Read contents from file
+		while (fgets(string, block_size, file) != NULL) {
+        	if(write(temp->socket, string, strlen(string)) < 0)
+				perror_exit("write @ directory.c line 126\n");
+    	}	
+		fclose(file);
+	}
 	Queue_Pop(queue);
     pthread_mutex_unlock(&mtx);
 }
