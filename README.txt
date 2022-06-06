@@ -91,7 +91,7 @@ create_directory.c:  CLient uses the file to collect data from server, create th
                      directory, create the files and fill them with the corresponding 
                      contents.
 
-server.c:	     Contains main code for the server.
+server.c:            Contains main code for the server.
 
 directory.c:         Server uses the file to receive the directory name, and send files 
                      and file contents to the client. All communication thread and worker
