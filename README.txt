@@ -18,11 +18,15 @@ Run client with: ./remoteClient -i <server_ip> -p <server_port> -d <directory>
 Code deficiency:
 - The program is fully implemented but works for one client at a time and not many clients
   at the same time.
+- If the directory already exists in the client i do not delete it, so make sure you delete the 
+  directory if you re-run the program.
 
 *******************************************************
 Other than the above the code should execute just fine.
 for any questions message me at: sdi1800070@di.uoa.gr
 *******************************************************
+
+// I tried my program with code-6-set directory from topic 6.
 
 ---- When running the program expect the execution to look like this ----
 -------------------------------------------------------------------------
