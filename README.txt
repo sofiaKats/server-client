@@ -111,3 +111,7 @@ validation.c:        Both client and server uses this file. It Contains function
 There are comments everywhere in the files explaining the thought behind The
 implementation. I made sure the code was clean enough for a 2nd person to 
 understand. For any further questions message me.
+
+///////////////////////////////////////////////////////////////////////////////////////////
+An sto programma zhth8ei na kanei copy ton idio ton fakelo tote afairese ta directory.c kai
+create_directory.c giati alliws 8a brei mesa sta file contents ~#@ kai $^$* kai 8a ginei segmentation
