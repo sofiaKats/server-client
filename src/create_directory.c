@@ -28,7 +28,7 @@ void receive_filenames(char* directory, int sock) {
         // buffer received file
         else {
             if(occurrence == FILENAME) {
-                buf2 = strstr(buffer, dir); //First occurrence of C string <directory> , keep string from <directory> to \0
+                buf2 = strstr(buffer, dir); //First occurrence of C string <filename> , keep string from <filename> to \0
                 strcpy(filename, buf2);
                 printf("Received: %s\n", filename);
                 // creating the file
